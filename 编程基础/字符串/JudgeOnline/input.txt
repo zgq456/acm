@@ -1,0 +1,200 @@
+#include <stdio.h>
+
+int main(void)
+{
+	return 0;
+}
+
+#include <queue>
+#include <cstdio>
+#include <cstring>
+
+using namespace std;
+
+typedef struct
+{
+	int x;
+	int y;
+}chess;
+
+int map[8][8];
+queue <chess> q;
+chess res;
+
+int inmap(int x, int y)
+{
+	return x >= 0 && x < 8 && y >= 0 && y < 8;
+}
+
+int eva_king()
+{
+	int i, j;
+	chess c, p;
+	while (!q.empty())
+	{
+		c = q.front();
+		q.pop();
+		if (c.x == res.x && c.y == res.y)
+			return map[c.y][c.x];
+		for (i = -1 ; i < 2 ; i++)
+		{
+			for (j = -1 ; j < 2 ; j++)
+			{
+				if (inmap(c.x + i, c.y + j) && map[c.y + j][c.x + i] == -1)
+				{
+					p.x = c.x + i;
+					p.y = c.y + j;
+					map[p.y][p.x] = map[c.y][c.x] + 1;
+					q.push(p);
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+int eva_queen()
+{
+	int i, j, k;
+	chess c, p;
+	while (!q.empty())
+	{
+		c = q.front();
+		q.pop();
+		if (c.x == res.x && c.y == res.y)
+			return map[c.y][c.x];
+		for (i = -1 ; i < 2 ; i++)
+		{
+			for (j = -1 ; j < 2 ; j++)
+			{
+				if ( !(i || j) ) continue;
+				for (k = 1 ; inmap(c.x + k * i, c.y + k * j) ; k++)
+				{
+					if (map[c.y + k * j][c.x + k * i] == -1)
+					{
+						p.x = c.x + k * i;
+						p.y = c.y + k * j;
+						map[p.y][p.x] = map[c.y][c.x] + 1;
+						q.push(p);
+					}
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+int eva_rook()
+{
+	int i, j, k;
+	chess c, p;
+	while (!q.empty())
+	{
+		c = q.front();
+		q.pop();
+		if (c.x == res.x && c.y == res.y)
+			return map[c.y][c.x];
+		for (i = -1 ; i < 2 ; i++)
+		{
+			for (j = -1 ; j < 2 ; j++)
+			{
+				if ( !(i || j) || (i && j) ) continue;
+				for (k = 1 ; inmap(c.x + k * i, c.y + k * j) ; k++)
+				{
+					if (map[c.y + k * j][c.x + k * i] == -1)
+					{
+						p.x = c.x + k * i;
+						p.y = c.y + k * j;
+						map[p.y][p.x] = map[c.y][c.x] + 1;
+						q.push(p);
+					}
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+int eva_ele()
+{
+	int i, j, k;
+	chess c, p;
+	while (!q.empty())
+	{
+		c = q.front();
+		q.pop();
+		if (c.x == res.x && c.y == res.y)
+			return map[c.y][c.x];
+		for (i = -1 ; i < 2 ; i++)
+		{
+			for (j = -1 ; j < 2 ; j++)
+			{
+				if ( !(i || j) || !(i && j) ) continue;
+				for (k = 1 ; inmap(c.x + k * i, c.y + k * j) ; k++)
+				{
+					if (map[c.y + k * j][c.x + k * i] == -1)
+					{
+						p.x = c.x + k * i;
+						p.y = c.y + k * j;
+						map[p.y][p.x] = map[c.y][c.x] + 1;
+						q.push(p);
+					}
+				}
+			}
+		}
+	}
+
+	return -1;
+}
+
+int main(void)
+{
+	int t;
+	char x, y;
+	chess c;
+	int dig;
+
+	scanf("%d%*c", &t);
+	while (t--)
+	{
+		scanf("%c%c%*c", &x, &y);
+		c.x = x - 'a';
+		c.y = y - '1';
+		scanf("%c%c%*c", &x, &y);
+		res.x = x - 'a';
+		res.y = y - '1';
+
+		while (!q.empty()) q.pop();
+		memset (map, -1, sizeof(map));
+		map[c.y][c.x] = 0;
+		q.push(c);
+		dig = eva_king();
+		dig == -1 ? printf("Inf ") : printf("%d ", dig);
+
+		while (!q.empty()) q.pop();
+		memset (map, -1, sizeof(map));
+		map[c.y][c.x] = 0;
+		q.push(c);
+		dig = eva_queen();
+		dig == -1 ? printf("Inf ") : printf("%d ", dig);
+
+		while (!q.empty()) q.pop();
+		memset (map, -1, sizeof(map));
+		map[c.y][c.x] = 0;
+		q.push(c);
+		dig = eva_rook();
+		dig == -1 ? printf("Inf ") : printf("%d ", dig);
+
+		while (!q.empty()) q.pop();
+		memset (map, -1, sizeof(map));
+		map[c.y][c.x] = 0;
+		q.push(c);
+		dig = eva_ele();
+		dig == -1 ? printf("Inf\n") : printf("%d\n", dig);
+	}
+
+	return 0;
+}

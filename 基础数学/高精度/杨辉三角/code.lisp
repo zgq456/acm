@@ -1,0 +1,10 @@
+(defun pascal (n)
+  (do* ((v nil (cons a v))
+        (a '(1) (mapcar #'+ `(0 ,@a) `(,@a 0)))
+        (i 0 (1+ i)))
+      ((= i n) (reverse v))))
+
+(do ((p (pascal 256))
+     (n (read) (read)))
+    ((= n 0))
+  (format t "~{~{~A~^ ~}~%~}~%" (subseq p 0 n)))

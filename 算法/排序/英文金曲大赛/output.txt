@@ -1,0 +1,6 @@
+beast 10.00
+bird 0.00
+pig 4.50
+cat 7.00
+table 5.46
+desk 34.21
