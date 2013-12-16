@@ -7,7 +7,7 @@ const int limit = 100001;
 vector<int> a(limit);
 
 void preprocess(void) {
-  for (int i = 2; i * i < limit; i++) {
+  for (int i = 2; i < limit; i++) {
     if (a[i] > 0) continue;
     for (int j = i; j < limit; j += i)
       a[j]++;
@@ -15,7 +15,7 @@ void preprocess(void) {
 }
 
 int process(int n) {
-  return a[n]? a[n]: 1;
+  return a[n];
 }
 
 int main(void) {
