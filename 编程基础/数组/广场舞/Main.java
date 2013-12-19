@@ -16,7 +16,7 @@ public class Main {
 			int cols = 0;
 			if(scan.hasNextLine()) {
 				String info = scan.nextLine();
-				if("0".equals(info.trim())) {
+				if("".equals(info.trim())) {
 					scan.close();
 					return;
 				}
@@ -45,11 +45,15 @@ public class Main {
 				for (int k = 0; k < maxRowIndexList.size(); k++) {
 					isHavePoint = true;
 					System.out.println((i + 1) + " " + (maxRowIndexList.get(k) + 1));
+					if(k == maxRowIndexList.size() - 1) {
+						System.out.println();
+					}
 				}
-				
 			}
+			
 			if(!isHavePoint) {
 				System.out.println("No Point");
+				System.out.println();
 			}
 		}
 	}
